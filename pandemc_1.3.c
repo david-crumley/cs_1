@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>			/*************************///    Current Progress  //*******************************
 #include <string.h>			// All functions tested and working properly							 			/
-							//	Need to create loops for main!!																				/
+							//	Get the add_to_end to work in the first loop !!!    							/
 #define	MAX_NAME_LENGTH 100 //																					/
 							/***********************************************************************************/
 typedef struct name {
@@ -25,23 +25,30 @@ int resize_arrayList (int, arrayList *);
 int resize_fullList(int, fullList *);
 
 int add_to_end_arrayList (arrayList *, name);
-int add_to_end_fullList ( fullList *, arrayList *);
+int add_to_end_fullList (fullList *, arrayList *);
 
 int main ()	{
-	int i, numOperations;
+	int i, j, numOperations;
 	char operation;
 	name inputString1;
 	name inputString2;
 	inputString1.str = (char*)calloc(MAX_NAME_LENGTH + 1, sizeof(char));
 	inputString2.str = (char*)calloc(MAX_NAME_LENGTH + 1, sizeof(char));
 	
-	// making arrayList	
+	/****  Dont need to do this yet *****
+	
 	arrayList * al = make_array_list(1);
 	if (al == NULL) {
 		return(1);
-	}	
-	fullList * fl = make_fullList(1);
-	if (fl == NULL)	{
+	}
+	*/
+	
+	fullList * symptom = make_fullList(1);
+	if (symptom == NULL)	{
+		return(1);
+	}
+	fullList * student = make_fullList(1);
+	if (student == NULL)	{
 		return(1);
 	}
 	scanf ("%d", &numOperations);
@@ -49,15 +56,30 @@ int main ()	{
 		scanf (" %c", &operation);
 		scanf (" %s", inputString1.str); 
 		scanf (" %s", inputString2.str);
+	
+		// check symptom->aol[j].arr[0].str for a match with inputString2
+		if (operation == 'u')	{
+			for (j = 0; j < symptom->size; j++)	{
+				if (strcmp (symptom->aol[j].arr[0].str, inputString2.str) == 0)	{	//This means there is a match
+					add_to_end_arrayList (symptom->aol[j], inputString1);			// adding the name of the student at the end of the list
+				}
+
+			}
+
+		
+		}
+	
+	
+	
 	}	
 			
 		
 	free(inputString1.str);
 	free(inputString2.str);
-	free (al->arr);
-	free (al);
-	free (fl->aol);
-	free (fl);
+	free (symptom->aol);
+	free (symptom);
+	free (student->aol);
+	free (student);
 	
 	return(0);
 }
