@@ -1,8 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>			/*************************///    Current Progress  //*******************************
 #include <string.h>			// All functions tested and working properly							 			/
-							//	  finish query and print reoutine      			       							/
-#define	MAX_NAME_LENGTH 100 //			add the second check in the update routine  							/
+							//	  fix this shit (use print statements in the loops to make sure they work		/
+#define	MAX_NAME_LENGTH 100 //														  							/
 							/***********************************************************************************/
 typedef struct name {
 	char * str;
@@ -27,20 +27,14 @@ int add_to_end_arrayList (arrayList *, name);
 int add_to_end_fullList (fullList *, arrayList *);
 
 int main ()	{
-	int i, j, numOperations, flag;
+	int i, j, k, numOperations, flag;
 	char operation;
 	name inputString1;
 	name inputString2;
 	inputString1.str = (char*)calloc(MAX_NAME_LENGTH + 1, sizeof(char));
 	inputString2.str = (char*)calloc(MAX_NAME_LENGTH + 1, sizeof(char));
 	
-	/****  Dont need to do this yet *****
 	
-	arrayList * al = make_array_list(1);
-	if (al == NULL) {
-		return(1);
-	}
-	*/
 	
 	fullList * symptom = make_fullList(1);
 	if (symptom == NULL)	{
@@ -61,14 +55,20 @@ int main ()	{
 			// check symptom->aol[j].arr[0].str for a match with inputString2
 			for (j = 0; j < symptom->size; j++)	{
 				if (strcmp (symptom->aol[j].arr[0].str, inputString2.str) == 0)	{	//This means there is a match
-					add_to_end_arrayList (&symptom->aol[j], inputString1);			// adding the name of the student at the end of the list
-				
-					/* 
-					NEED TO ADD A  CHEECK TO MAKE SURE HE SAME STUDENT ISNT RECORDED TWICE
-					*/
-
-				
-					flag = 1;
+					
+					for (k = 0; k < symptom->aol[j].size; k++)	{
+						if (strcmp (symptom->aol[j].arr[k].str, inputString1.str) == 0)	
+						if (strcmp (symptom->aol[j].arr[k].str, inputString1.str) == 0)	
+							flag = -1;
+						
+					}
+					if (flag > -1)	{
+						add_to_end_arrayList (&symptom->aol[j], inputString1);			// adding the name of the student at the end of the list
+						flag = 1;
+					}
+					
+					
+					
 				}
 			}
 			// if no matches (flag is 0)
@@ -84,12 +84,16 @@ int main ()	{
 			// chack student->aol[j].arr[0].str for a match with inputString1
 			for (j = 0; j < student->size; j++)	{
 				if (strcmp (student->aol[j].arr[0].str, inputString1.str) == 0)	{
-					add_to_end_arrayList (&student->aol[j], inputString2);
-					flag = 1;
+					for (k = 0; k < student->aol[j].size; k++)	{
+						if (strcmp (student->aol[j].arr[k].str, inputString2.str) == 0)	
+							flag = -1;
 					
-					/*
-					NEED TO ADD A CHECK TO MAKE SURE THE SAME SYMPTOM DOESNT GET RECORDED TWICE
-					*/
+					}
+					if (flag > -1)	{
+						add_to_end_arrayList (&student->aol[j], inputString2);
+						flag = 1;
+					}
+					
 					
 				}
 			}
@@ -103,17 +107,34 @@ int main ()	{
 		}
 		
 		else if (operation == 'q')	{
+		
 			// check if inputString1 is "symptom" or "student"
-			if (strcmp (inputString1.str, "symptom")	{
+			if (strcmp (inputString1.str, "symptom") == 0)	{
 				// check if inputString2 is in student->aol[i].arr[0] (do a loop)
 					//if it is 
 						// print a loop running through student->aol[the matching list].arr[i].str
 						// print student->aol[the matching list].size
 						// each symptom on a new line
+				for (j = 0; j < symptom->size; j++)	{
+					printf("loopin\n");
+					if (strcmp (symptom->aol[j].arr[0].str, inputString2.str) == 0)	{
+						printf("%d\n", symptom->aol[j].size);
+						for (k = 0; k < symptom->aol[j].size; k++)	{
+							printf("%s\n", symptom->aol[j].arr[k].str);
+						}
+					}
+				}								
 			}
 			
-			if (strcmp (inputString1.str, "student")	{
-				
+			if (strcmp (inputString1.str, "student")== 0)	{
+				for (j = 0; j < student->size; j++)	{
+					if (strcmp (student->aol[j].arr[0].str, inputString2.str) == 0)	{
+						printf("%d\n", student->aol[j].size);
+						for (k = 0; k < student->aol[j].size; k++)	{
+							printf("%s\n", student->aol[j].arr[k].str);
+						}
+					}
+				}
 			}
 		
 		
