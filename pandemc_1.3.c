@@ -1,8 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>			/*************************///    Current Progress  //*******************************
 #include <string.h>			// All functions tested and working properly							 			/
-							//	  Finish the search through the student fullList       							/
-#define	MAX_NAME_LENGTH 100 //		for inputString1															/
+							//	  finish query and print reoutine      			       							/
+#define	MAX_NAME_LENGTH 100 //			add the second check in the update routine  							/
 							/***********************************************************************************/
 typedef struct name {
 	char * str;
@@ -55,31 +55,70 @@ int main ()	{
 		scanf (" %c", &operation);
 		scanf (" %s", inputString1.str); 
 		scanf (" %s", inputString2.str);
-	flag = 0;
+		flag = 0;
 		
 		if (operation == 'u')	{
 			// check symptom->aol[j].arr[0].str for a match with inputString2
 			for (j = 0; j < symptom->size; j++)	{
 				if (strcmp (symptom->aol[j].arr[0].str, inputString2.str) == 0)	{	//This means there is a match
 					add_to_end_arrayList (&symptom->aol[j], inputString1);			// adding the name of the student at the end of the list
-					
+				
+					/* 
+					NEED TO ADD A  CHEECK TO MAKE SURE HE SAME STUDENT ISNT RECORDED TWICE
+					*/
+
+				
 					flag = 1;
 				}
 			}
 			// if no matches (flag is 0)
 			if (flag == 0)	{
 				arrayList * newArrList = make_array_list(1);
+				add_to_end_arrayList(newArrList, inputString2);
 				add_to_end_arrayList(newArrList, inputString1);
 				add_to_end_fullList(symptom, newArrList);
+				free (newArrList);
+			}
+			flag = 0;
+		
+			// chack student->aol[j].arr[0].str for a match with inputString1
+			for (j = 0; j < student->size; j++)	{
+				if (strcmp (student->aol[j].arr[0].str, inputString1.str) == 0)	{
+					add_to_end_arrayList (&student->aol[j], inputString2);
+					flag = 1;
+					
+					/*
+					NEED TO ADD A CHECK TO MAKE SURE THE SAME SYMPTOM DOESNT GET RECORDED TWICE
+					*/
+					
+				}
+			}
+			if (flag == 0)	{
+				arrayList * newArrList = make_array_list(1);
+				add_to_end_arrayList(newArrList, inputString1);
+				add_to_end_arrayList(newArrList, inputString2);
+				add_to_end_fullList(student, newArrList);
+				free (newArrList);
+			}
+		}
+		
+		else if (operation == 'q')	{
+			// check if inputString1 is "symptom" or "student"
+			if (strcmp (inputString1.str, "symptom")	{
+				// check if inputString2 is in student->aol[i].arr[0] (do a loop)
+					//if it is 
+						// print a loop running through student->aol[the matching list].arr[i].str
+						// print student->aol[the matching list].size
+						// each symptom on a new line
+			}
+			
+			if (strcmp (inputString1.str, "student")	{
 				
 			}
 		
-			// chack student->aol[j].arr[0].str for a match with inputString1
-			for (j = 0; j < student->size; j++)
 		
-	
-	
-	
+		
+		}
 	}	
 			
 		
