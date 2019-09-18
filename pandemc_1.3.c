@@ -1,13 +1,12 @@
 #include <stdio.h>
 #include <stdlib.h>			/*************************///    Current Progress  //*******************************
 #include <string.h>			// All functions tested and working properly							 			/
-							//	Get the add_to_end to work in the first loop !!!    							/
-#define	MAX_NAME_LENGTH 100 //																					/
+							//	  Finish the search through the student fullList       							/
+#define	MAX_NAME_LENGTH 100 //		for inputString1															/
 							/***********************************************************************************/
 typedef struct name {
 	char * str;
 } name;
-
 typedef struct arrayList	{
 	name * arr;
 	int size, cap;
@@ -28,7 +27,7 @@ int add_to_end_arrayList (arrayList *, name);
 int add_to_end_fullList (fullList *, arrayList *);
 
 int main ()	{
-	int i, j, numOperations;
+	int i, j, numOperations, flag;
 	char operation;
 	name inputString1;
 	name inputString2;
@@ -56,18 +55,28 @@ int main ()	{
 		scanf (" %c", &operation);
 		scanf (" %s", inputString1.str); 
 		scanf (" %s", inputString2.str);
-	
-		// check symptom->aol[j].arr[0].str for a match with inputString2
+	flag = 0;
+		
 		if (operation == 'u')	{
+			// check symptom->aol[j].arr[0].str for a match with inputString2
 			for (j = 0; j < symptom->size; j++)	{
 				if (strcmp (symptom->aol[j].arr[0].str, inputString2.str) == 0)	{	//This means there is a match
-					add_to_end_arrayList (symptom->aol[j], inputString1);			// adding the name of the student at the end of the list
+					add_to_end_arrayList (&symptom->aol[j], inputString1);			// adding the name of the student at the end of the list
+					
+					flag = 1;
 				}
-
 			}
-
+			// if no matches (flag is 0)
+			if (flag == 0)	{
+				arrayList * newArrList = make_array_list(1);
+				add_to_end_arrayList(newArrList, inputString1);
+				add_to_end_fullList(symptom, newArrList);
+				
+			}
 		
-		}
+			// chack student->aol[j].arr[0].str for a match with inputString1
+			for (j = 0; j < student->size; j++)
+		
 	
 	
 	
