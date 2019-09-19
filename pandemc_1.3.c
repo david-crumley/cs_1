@@ -26,41 +26,47 @@ int resize_fullList(int, fullList *);
 int add_to_end_arrayList (arrayList *, name);
 int add_to_end_fullList (fullList *, arrayList *);
 
+#define STARTING_CAP 1
+
 int main ()	{
 	int i, j, k, numOperations, flag;
 	char operation;
 	name inputString1;
 	name inputString2;
-	inputString1.str = (char*)calloc(MAX_NAME_LENGTH + 1, sizeof(char));
-	inputString2.str = (char*)calloc(MAX_NAME_LENGTH + 1, sizeof(char));
+		
 	
-	
-	
-	fullList * symptom = make_fullList(1);
+	fullList * symptom = make_fullList(STARTING_CAP);
 	if (symptom == NULL)	{
 		return(1);
 	}
-	fullList * student = make_fullList(1);
+	fullList * student = make_fullList(STARTING_CAP);
 	if (student == NULL)	{
 		return(1);
 	}
 	scanf ("%d", &numOperations);
 	for (i = 0; i < numOperations; i++)	{
+		
+		inputString1.str = (char*)calloc(MAX_NAME_LENGTH + 1, sizeof(char));
+		inputString2.str = (char*)calloc(MAX_NAME_LENGTH + 1, sizeof(char));
+		
 		scanf (" %c", &operation);
 		scanf (" %s", inputString1.str); 
 		scanf (" %s", inputString2.str);
-		flag = 0;
+		
+		flag = 1;
 		
 		if (operation == 'u')	{
+			flag = 0;
+			
 			// check symptom->aol[j].arr[0].str for a match with inputString2
 			for (j = 0; j < symptom->size; j++)	{
+				
 				if (strcmp (symptom->aol[j].arr[0].str, inputString2.str) == 0)	{	//This means there is a match
 					
 					for (k = 0; k < symptom->aol[j].size; k++)	{
-						if (strcmp (symptom->aol[j].arr[k].str, inputString1.str) == 0)	
-						if (strcmp (symptom->aol[j].arr[k].str, inputString1.str) == 0)	
+						if (strcmp (symptom->aol[j].arr[k].str, inputString1.str) == 0)	{
 							flag = -1;
-						
+						}
 					}
 					if (flag > -1)	{
 						add_to_end_arrayList (&symptom->aol[j], inputString1);			// adding the name of the student at the end of the list
@@ -73,21 +79,27 @@ int main ()	{
 			}
 			// if no matches (flag is 0)
 			if (flag == 0)	{
-				arrayList * newArrList = make_array_list(1);
+				printf("test\n");
+				arrayList * newArrList = make_array_list(STARTING_CAP);
 				add_to_end_arrayList(newArrList, inputString2);
 				add_to_end_arrayList(newArrList, inputString1);
 				add_to_end_fullList(symptom, newArrList);
 				free (newArrList);
+				printf ("%s\n", symptom->aol[0].arr[0].str);
+				printf ("size: %d; cap: %d\n", symptom->aol[0].size, symptom->aol[0].cap);
+				
+
+				
 			}
-			flag = 0;
+			
 		
 			// chack student->aol[j].arr[0].str for a match with inputString1
 			for (j = 0; j < student->size; j++)	{
 				if (strcmp (student->aol[j].arr[0].str, inputString1.str) == 0)	{
 					for (k = 0; k < student->aol[j].size; k++)	{
-						if (strcmp (student->aol[j].arr[k].str, inputString2.str) == 0)	
+						if (strcmp (student->aol[j].arr[k].str, inputString2.str) == 0)	{
 							flag = -1;
-					
+						}
 					}
 					if (flag > -1)	{
 						add_to_end_arrayList (&student->aol[j], inputString2);
@@ -98,35 +110,37 @@ int main ()	{
 				}
 			}
 			if (flag == 0)	{
-				arrayList * newArrList = make_array_list(1);
+				printf("test\n");
+				arrayList * newArrList = make_array_list(STARTING_CAP);
 				add_to_end_arrayList(newArrList, inputString1);
 				add_to_end_arrayList(newArrList, inputString2);
 				add_to_end_fullList(student, newArrList);
+				printf ("%s\n", student->aol[0].arr[0].str);
 				free (newArrList);
+				
 			}
 		}
 		
 		else if (operation == 'q')	{
-		
+			
 			// check if inputString1 is "symptom" or "student"
 			if (strcmp (inputString1.str, "symptom") == 0)	{
-				// check if inputString2 is in student->aol[i].arr[0] (do a loop)
-					//if it is 
-						// print a loop running through student->aol[the matching list].arr[i].str
-						// print student->aol[the matching list].size
-						// each symptom on a new line
+				
 				for (j = 0; j < symptom->size; j++)	{
-					printf("loopin\n");
+					printf ("test\n");
+					printf("%s", symptom->aol[j].arr[0].str);
 					if (strcmp (symptom->aol[j].arr[0].str, inputString2.str) == 0)	{
-						printf("%d\n", symptom->aol[j].size);
-						for (k = 0; k < symptom->aol[j].size; k++)	{
-							printf("%s\n", symptom->aol[j].arr[k].str);
+						printf ("test\n");
+						printf("%d\n", symptom->aol[j].size - 1);	
+						for (k = 0; k < symptom->aol[j].size - 1; k++)	{
+							printf ("test\n");
+							printf("%s\n", symptom->aol[j].arr[k + 1].str);
 						}
 					}
 				}								
 			}
 			
-			if (strcmp (inputString1.str, "student")== 0)	{
+			else if (strcmp (inputString1.str, "student")== 0)	{
 				for (j = 0; j < student->size; j++)	{
 					if (strcmp (student->aol[j].arr[0].str, inputString2.str) == 0)	{
 						printf("%d\n", student->aol[j].size);
@@ -140,11 +154,12 @@ int main ()	{
 		
 		
 		}
-	}	
-			
+		free(inputString1.str);
+		free(inputString2.str);
+
+	}			
 		
-	free(inputString1.str);
-	free(inputString2.str);
+	
 	free (symptom->aol);
 	free (symptom);
 	free (student->aol);
@@ -211,6 +226,6 @@ int add_to_end_fullList (fullList * fl, arrayList * al)	{
 		resize_fullList (fl->cap * 2, fl);
 	}
 	fl->aol[fl->size] = *al;
-	al->size++;
+	fl->size++;
 	return (0);
 }
