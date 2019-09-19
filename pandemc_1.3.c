@@ -1,9 +1,10 @@
 #include <stdio.h>
-#include <stdlib.h>			/*************************///    Current Progress  //*******************************
-#include <string.h>			// All functions tested and working properly							 			/
-							//	  fix this shit (use print statements in the loops to make sure they work		/
-#define	MAX_NAME_LENGTH 100 //														  							/
-							/***********************************************************************************/
+#include <stdlib.h>							//**************************************************************//				
+#include <string.h>							//   David Crumley:												// 
+											//	 Programming Assignment 1: Pandemic	                 		// 
+#define	MAX_NAME_LENGTH 100 			    //   COP 3502C 									  				//			
+#define STARTING_CAP 1						//**************************************************************//											
+											
 typedef struct name {
 	char * str;
 } name;
@@ -23,35 +24,37 @@ fullList * make_fullList (int);
 int resize_arrayList (int, arrayList *); 
 int resize_fullList(int, fullList *);
 
-int add_to_end_arrayList (arrayList *, name);
+int add_to_end_arrayList (arrayList *, name *);
 int add_to_end_fullList (fullList *, arrayList *);
-
-#define STARTING_CAP 1
 
 int main ()	{
 	int i, j, k, numOperations, flag;
 	char operation;
-	name inputString1;
-	name inputString2;
-		
+	name * inputString1;
+	name * inputString2;
 	
-	fullList * symptom = make_fullList(STARTING_CAP);
+	fullList * symptom = make_fullList(STARTING_CAP);		
 	if (symptom == NULL)	{
 		return(1);
 	}
+
 	fullList * student = make_fullList(STARTING_CAP);
 	if (student == NULL)	{
 		return(1);
 	}
+	
 	scanf ("%d", &numOperations);
+	
 	for (i = 0; i < numOperations; i++)	{
 		
-		inputString1.str = (char*)calloc(MAX_NAME_LENGTH + 1, sizeof(char));
-		inputString2.str = (char*)calloc(MAX_NAME_LENGTH + 1, sizeof(char));
+		inputString1 = (name *)calloc(1, sizeof(name));
+		inputString2 = (name *)calloc(1, sizeof(name));
+		inputString1->str = (char *)calloc(MAX_NAME_LENGTH + 1, sizeof(char));
+		inputString2->str = (char *)calloc(MAX_NAME_LENGTH + 1, sizeof(char));
 		
 		scanf (" %c", &operation);
-		scanf (" %s", inputString1.str); 
-		scanf (" %s", inputString2.str);
+		scanf (" %s", inputString1->str); 
+		scanf (" %s", inputString2->str);
 		
 		flag = 1;
 		
@@ -61,43 +64,33 @@ int main ()	{
 			// check symptom->aol[j].arr[0].str for a match with inputString2
 			for (j = 0; j < symptom->size; j++)	{
 				
-				if (strcmp (symptom->aol[j].arr[0].str, inputString2.str) == 0)	{	//This means there is a match
+				if (strcmp (symptom->aol[j].arr[0].str, inputString2->str) == 0)	{	
 					
 					for (k = 0; k < symptom->aol[j].size; k++)	{
-						if (strcmp (symptom->aol[j].arr[k].str, inputString1.str) == 0)	{
+						if (strcmp (symptom->aol[j].arr[k].str, inputString1->str) == 0)	{
 							flag = -1;
 						}
 					}
 					if (flag > -1)	{
-						add_to_end_arrayList (&symptom->aol[j], inputString1);			// adding the name of the student at the end of the list
+						add_to_end_arrayList (&symptom->aol[j], inputString1);			
 						flag = 1;
 					}
-					
-					
-					
 				}
 			}
 			// if no matches (flag is 0)
 			if (flag == 0)	{
-				printf("test\n");
 				arrayList * newArrList = make_array_list(STARTING_CAP);
 				add_to_end_arrayList(newArrList, inputString2);
 				add_to_end_arrayList(newArrList, inputString1);
 				add_to_end_fullList(symptom, newArrList);
 				free (newArrList);
-				printf ("%s\n", symptom->aol[0].arr[0].str);
-				printf ("size: %d; cap: %d\n", symptom->aol[0].size, symptom->aol[0].cap);
-				
-
-				
 			}
-			
-		
-			// chack student->aol[j].arr[0].str for a match with inputString1
+					
+			// check student->aol[j].arr[0].str for a match with inputString1
 			for (j = 0; j < student->size; j++)	{
-				if (strcmp (student->aol[j].arr[0].str, inputString1.str) == 0)	{
+				if (strcmp (student->aol[j].arr[0].str, inputString1->str) == 0)	{
 					for (k = 0; k < student->aol[j].size; k++)	{
-						if (strcmp (student->aol[j].arr[k].str, inputString2.str) == 0)	{
+						if (strcmp (student->aol[j].arr[k].str, inputString2->str) == 0)	{
 							flag = -1;
 						}
 					}
@@ -105,57 +98,55 @@ int main ()	{
 						add_to_end_arrayList (&student->aol[j], inputString2);
 						flag = 1;
 					}
-					
-					
 				}
 			}
+			// if no matches
 			if (flag == 0)	{
-				printf("test\n");
+				
 				arrayList * newArrList = make_array_list(STARTING_CAP);
 				add_to_end_arrayList(newArrList, inputString1);
 				add_to_end_arrayList(newArrList, inputString2);
 				add_to_end_fullList(student, newArrList);
-				printf ("%s\n", student->aol[0].arr[0].str);
-				free (newArrList);
 				
+				free (newArrList);
 			}
 		}
 		
 		else if (operation == 'q')	{
 			
 			// check if inputString1 is "symptom" or "student"
-			if (strcmp (inputString1.str, "symptom") == 0)	{
+			if (strcmp (inputString1->str, "symptom") == 0)	{
 				
 				for (j = 0; j < symptom->size; j++)	{
-					printf ("test\n");
-					printf("%s", symptom->aol[j].arr[0].str);
-					if (strcmp (symptom->aol[j].arr[0].str, inputString2.str) == 0)	{
-						printf ("test\n");
-						printf("%d\n", symptom->aol[j].size - 1);	
+					
+					if (strcmp (symptom->aol[j].arr[0].str, inputString2->str) == 0)	{
+						printf("%d\n", symptom->aol[j].size - 1);
 						for (k = 0; k < symptom->aol[j].size - 1; k++)	{
-							printf ("test\n");
 							printf("%s\n", symptom->aol[j].arr[k + 1].str);
 						}
 					}
 				}								
 			}
 			
-			else if (strcmp (inputString1.str, "student")== 0)	{
+			else if (strcmp (inputString1->str, "student")== 0)	{
+				
 				for (j = 0; j < student->size; j++)	{
-					if (strcmp (student->aol[j].arr[0].str, inputString2.str) == 0)	{
-						printf("%d\n", student->aol[j].size);
-						for (k = 0; k < student->aol[j].size; k++)	{
-							printf("%s\n", student->aol[j].arr[k].str);
+					
+					if (strcmp (student->aol[j].arr[0].str, inputString2->str) == 0)	{
+						printf("%d\n", student->aol[j].size - 1);
+						
+						for (k = 0; k < student->aol[j].size - 1; k++)	{
+							printf("%s\n", student->aol[j].arr[k + 1].str);
 						}
 					}
 				}
 			}
-		
-		
-		
 		}
-		free(inputString1.str);
-		free(inputString2.str);
+		
+		free(inputString1->str);
+		free(inputString2->str);
+		free(inputString1);
+		free(inputString2);
 
 	}			
 		
@@ -190,11 +181,11 @@ int resize_arrayList (int newCap, arrayList * al)	{
 	return (0);
 }
 
-int add_to_end_arrayList (arrayList * al, name nm)	{
+int add_to_end_arrayList (arrayList * al, name * nm)	{
 	if (al->size == al->cap)	{
 		resize_arrayList (al->cap * 2, al);
 	}	
-	al->arr[al->size] = nm;
+	al->arr[al->size] = * nm;
 	al->size++;
 	return (0);
 }
