@@ -142,12 +142,6 @@ int main ()	{
 				}
 			}
 		}
-		
-		free(inputString1->str);
-		free(inputString2->str);
-		free(inputString1);
-		free(inputString2);
-
 	}			
 		
 	
@@ -155,6 +149,11 @@ int main ()	{
 	free (symptom);
 	free (student->aol);
 	free (student);
+	
+	free(inputString1->str);
+	free(inputString2->str);
+	free(inputString1);
+	free(inputString2);
 	
 	return(0);
 }
