@@ -10,6 +10,7 @@ typedef struct arrayPiece	{
 
 arrayPiece* append (arrayPiece* tailPiece, int value);
 arrayPiece* prepend (arrayPiece* headPiece, int value);
+arrayPiece* deleteByIndex (arrayPiece* headPiece, int index);
 void printArray (arrayPiece* headPiece);
 void freeArray (arrayPiece* headPiece);
 	
@@ -32,7 +33,11 @@ int main ()	{
 	headPiece = prepend (headPiece, 1);
 	
 	printArray (headPiece);
+
+	headPiece = deleteByIndex(headPiece, 3);
 	
+	printArray (headPiece);
+
 	freeArray (headPiece);
 	
 return (0);
@@ -75,13 +80,30 @@ arrayPiece* prepend (arrayPiece* headPiece, int value)	{
 void freeArray(arrayPiece* headPiece)	{
 	
 	while (headPiece != NULL)	{
-		freeArray(headPiece->nextPiece);
+		arrayPiece* secondArrayPiece = headPiece->nextPiece; 
+		free(headPiece);
+		headPiece = secondArrayPiece;
+		
 	}
 }
 		
-
-
-
-
-
+arrayPiece* deleteByIndex (arrayPiece* headPiece, int index)	{
 	
+	arrayPiece* somePiece = headPiece;
+	if (somePiece == NULL)	{
+		return somePiece;
+	}
+	if (index == 0)	{
+		arrayPiece* replacementPiece = somePiece->nextPiece;
+		somePice = 
+		free (somePiece);
+		
+		
+	}
+	
+	somePiece = deleteByIndex (somePiece->nextPiece, index - 1);
+	
+}
+
+
+
